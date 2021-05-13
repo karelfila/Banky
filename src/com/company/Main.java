@@ -12,7 +12,8 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         String moneyDestination = "";
         String sentMoney;
-
+        String depMoney;
+        String witMoney;
         Bank kb = new Bank();
         kb.setBank("Komerční Banka");
         kb.setBankId("100");
@@ -32,7 +33,6 @@ public class Main {
         pn.setName("Petr");
         pn.setSecondName("");
         pn.setLastName("Novák");
-
 
         Human jeb = new Human();
         jeb.setName("Jaromír");
@@ -58,14 +58,9 @@ public class Main {
         n3.setMoney(95000);
         n3.setUser(pn);
         n3.setPassword(49136);
-        n2.setAccBank(cnb);
-
-
-
+        n3.setAccBank(cnb);
 
         String longAccNumber = n1.getAccnumber() + kb.getBankId();
-
-
 
         System.out.println("Enter password:");
         String inputPassword = sc.nextLine();
@@ -73,13 +68,21 @@ public class Main {
         int inputPasswordInt = Integer.parseInt(inputPassword);
 
         if (inputPasswordInt == n1.getPassword()) {
+            System.out.println("------------------------");
+            System.out.println(n1.getAccBank().getBank());
+            System.out.println("------------------------");
             System.out.println("Welcome " + n1.getUser().getFullName() + "!");
-            System.out.println("Your money: " + n1.getMoney());
+            System.out.println("Your money: " + n1.getMoney() + "$");
+        }
+        while (inputPasswordInt == n1.getPassword()) {
+
             System.out.println("------------------------");
             System.out.println("A) Send Money");
-            System.out.println("B) Delete Account");
+            System.out.println("B) Withdraw or Deposit Money");
             System.out.println("C) Create Account");
-            System.out.println("D) Withdraw or Deposit Money");
+            System.out.println("D) Delete Account");
+            System.out.println("E) End Program");
+            System.out.println("------------------------");
             String reply = sc.nextLine();
 
             if (reply.equals("A")) {
@@ -107,15 +110,207 @@ public class Main {
                     }
                 }
             }
-            if (inputPasswordInt == n2.getPassword()) {
-                System.out.println("Welcome " + n2.getUser().getFullName() + "!");
-                System.out.println("Your money: " + n2.getMoney());
+
+            if(reply.equals("B")) {
+                System.out.println("------------------------");
+                System.out.println("A) Deposit");
+                System.out.println("B) Withdraw");
+                System.out.println("------------------------");
+                String replyS = sc.nextLine();
+
+                if(replyS.equals("A")){
+                    System.out.println("How much money do you want to deposit?");
+                    depMoney = sc.nextLine();
+                    int depMoneyInt = Integer.parseInt(depMoney);
+                    n1.setMoney(n1.getMoney() + depMoneyInt);
+                }
+                if(replyS.equals("B")){
+                    System.out.println("How much money do you want to withdraw?");
+                    witMoney = sc.nextLine();
+
+                    int witMoneyInt = Integer.parseInt(witMoney);
+                    if(witMoneyInt < n1.getMoney()) {
+                        n1.setMoney(n1.getMoney() - witMoneyInt);
+                    } else {
+                        System.out.println("You don't have enough money");
+                    }
+                }
             }
-            if (inputPasswordInt == n3.getPassword()) {
-                System.out.println("Welcome " + n3.getUser().getFullName() + "!");
-                System.out.println("Your money: " + n3.getMoney());
+            if(reply.equals("C")) {
+                System.out.println("Work In Progress :)");
+            }
+            if(reply.equals("D")) {
+                System.out.println("Work In Progress :)");
+            }
+            if(reply.equals("E")) {
+                break;
             }
 
+            if (inputPasswordInt == n2.getPassword()) {
+                System.out.println("------------------------");
+                System.out.println(n2.getAccBank().getBank());
+                System.out.println("------------------------");
+                System.out.println("Welcome " + n2.getUser().getFullName() + "!");
+                System.out.println("Your money: " + n2.getMoney() + "$");
+            }
+
+            while (inputPasswordInt == n2.getPassword()) {
+                System.out.println("Welcome " + n2.getUser().getFullName() + "!");
+                System.out.println("Your money: " + n2.getMoney());
+
+                System.out.println("------------------------");
+                System.out.println("A) Send Money");
+                System.out.println("B) Withdraw or Deposit Money");
+                System.out.println("C) Create Account");
+                System.out.println("D) Delete Account");
+                System.out.println("E) End Program");
+                System.out.println("------------------------");
+
+                String reply1 = sc.nextLine();
+
+                if (reply1.equals("A")) {
+                    System.out.println("Where do you want to send money? (Enter account number + Bank id)");
+                    moneyDestination = sc.nextLine();
+                    System.out.println("How much many do you want to send?");
+                    sentMoney = sc.nextLine();
+
+                    int sentMoneyInt = Integer.parseInt(sentMoney);
+                    if (sentMoneyInt > n2.getMoney()) {
+                        System.out.println("You don't have enough money");
+                    } else {
+                        if (moneyDestination.equals(n2.getLongAccNumber())) {
+                            System.out.println("You cant send money to yourself");
+                        }
+                        if (moneyDestination.equals(n1.getLongAccNumber())) {
+                            n2.setMoney(n2.getMoney() - sentMoneyInt);
+                            n1.setMoney(n1.getMoney() + sentMoneyInt);
+                            System.out.println("Your money has been sent");
+                        }
+                        if (moneyDestination.equals(n3.getLongAccNumber())) {
+                            n2.setMoney(n2.getMoney() - sentMoneyInt);
+                            n3.setMoney(n3.getMoney() + sentMoneyInt);
+                            System.out.println("Your money has been sent");
+                        }
+                    }
+                }
+                if(reply1.equals("B")) {
+                    System.out.println("------------------------");
+                    System.out.println("A) Deposit");
+                    System.out.println("B) Withdraw");
+                    System.out.println("------------------------");
+                    String replyS = sc.nextLine();
+
+                    if(replyS.equals("A")){
+                        System.out.println("How much money do you want to deposit?");
+                        depMoney = sc.nextLine();
+                        int depMoneyInt = Integer.parseInt(depMoney);
+                        n2.setMoney(n2.getMoney() + depMoneyInt);
+                    }
+                    if(replyS.equals("B")){
+                        System.out.println("How much money do you want to withdraw?");
+                        witMoney = sc.nextLine();
+
+                        int witMoneyInt = Integer.parseInt(witMoney);
+                        if(witMoneyInt < n2.getMoney()) {
+                            n2.setMoney(n2.getMoney() - witMoneyInt);
+                        } else {
+                            System.out.println("You don't have enough money");
+                        }
+                    }
+                }
+                if(reply1.equals("C")) {
+                    System.out.println("Work In Progress :)");
+                }
+                if(reply1.equals("C")) {
+                    System.out.println("Work In Progress :)");
+                }
+                if(reply1.equals("E")) {
+                    break;
+                }
+
+                if (inputPasswordInt == n3.getPassword()) {
+                    System.out.println("------------------------");
+                    System.out.println(n3.getAccBank().getBank());
+                    System.out.println("------------------------");
+                    System.out.println("Welcome " + n3.getUser().getFullName() + "!");
+                    System.out.println("Your money: " + n3.getMoney() + "$");
+                }
+                while (inputPasswordInt == n3.getPassword()) {
+                    System.out.println("Welcome " + n3.getUser().getFullName() + "!");
+                    System.out.println("Your money: " + n3.getMoney());
+
+                    System.out.println("------------------------");
+                    System.out.println("A) Send Money");
+                    System.out.println("B) Withdraw or Deposit Money");
+                    System.out.println("C) Create Account");
+                    System.out.println("D) Delete Account");
+                    System.out.println("E) End Program");
+                    System.out.println("------------------------");
+
+                    String reply2 = sc.nextLine();
+
+                    if (reply2.equals("A")) {
+                        System.out.println("Where do you want to send money? (Enter account number + Bank id)");
+                        moneyDestination = sc.nextLine();
+                        System.out.println("How much many do you want to send?");
+                        sentMoney = sc.nextLine();
+
+                        int sentMoneyInt = Integer.parseInt(sentMoney);
+                        if (sentMoneyInt > n3.getMoney()) {
+                            System.out.println("You don't have enough money");
+                        } else {
+                            if (moneyDestination.equals(n3.getLongAccNumber())) {
+                                System.out.println("You cant send money to yourself");
+                            }
+                            if (moneyDestination.equals(n1.getLongAccNumber())) {
+                                n3.setMoney(n3.getMoney() - sentMoneyInt);
+                                n1.setMoney(n1.getMoney() + sentMoneyInt);
+                                System.out.println("Your money has been sent");
+                            }
+                            if (moneyDestination.equals(n2.getLongAccNumber())) {
+                                n3.setMoney(n3.getMoney() - sentMoneyInt);
+                                n2.setMoney(n2.getMoney() + sentMoneyInt);
+                                System.out.println("Your money has been sent");
+                            }
+                        }
+                    }
+                    if(reply2.equals("B")) {
+                        System.out.println("------------------------");
+                        System.out.println("A) Deposit");
+                        System.out.println("B) Withdraw");
+                        System.out.println("------------------------");
+                        String replyS = sc.nextLine();
+
+                        if(replyS.equals("A")){
+                            System.out.println("How much money do you want to deposit?");
+                            depMoney = sc.nextLine();
+                            int depMoneyInt = Integer.parseInt(depMoney);
+                            n3.setMoney(n3.getMoney() + depMoneyInt);
+                        }
+                        if(replyS.equals("B")){
+                            System.out.println("How much money do you want to withdraw?");
+                            witMoney = sc.nextLine();
+
+                            int witMoneyInt = Integer.parseInt(witMoney);
+                            if(witMoneyInt < n3.getMoney()) {
+                                n3.setMoney(n3.getMoney() - witMoneyInt);
+                            } else {
+                                System.out.println("You don't have enough money");
+                            }
+                        }
+                    }
+
+                    if(reply2.equals("C")) {
+                        System.out.println("Work In Progress :)");
+                    }
+                    if(reply2.equals("C")) {
+                        System.out.println("Work In Progress :)");
+                    }
+                    if(reply2.equals("E")) {
+                        break;
+                    }
+                }
+            }
         }
     }
 }
